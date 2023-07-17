@@ -1,0 +1,30 @@
+{{- if .Values.apps.clients.dev.piktochart.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: piktochart-dev-web
+  namespace: argocd
+  labels:
+    creativeadvtech.ml/argo: app
+    creativeadvtech.ml/project: piktochart
+    creativeadvtech.ml/app: web
+    creativeadvtech.ml/env: dev
+spec:
+  project: clients-staging
+  source:
+    repoURL: 'git@github.com:haydercyber/Piktochart.git'
+    path: piktochart
+    targetRevision: master
+    helm:
+      releaseName: piktochart
+      valueFiles:
+        - values-dev.yaml
+  destination:
+    server: 'https://CLUSTERID.gr7.eu-central-1.eks.amazonaws.com'
+    namespace: piktochart
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+      allowEmpty: false
+{{- end -}}

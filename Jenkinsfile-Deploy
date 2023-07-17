@@ -1,0 +1,32 @@
+pipeline {
+    agent {
+        kubernetes {
+            cloud 'eks-clients-staging'
+            yamlFile 'pipeline/deploy-pod-template.yaml'
+        }
+    }
+    options {
+        ansiColor('xterm')
+    }
+    stages {
+        stage('Setting deployment') {
+            steps {
+                script {
+                    currentBuild.description = "Deploying image: ${params.IMAGETAG}\n Deploying to the ${params.ENVIRONMENT} environment"
+                }
+            }
+        }
+        stage('Deploy to dev') {
+            when {
+                expression { params.ENVIRONMENT == 'dev' }
+                beforeInput true
+                beforeAgent true
+                beforeOptions true
+            }
+            steps {
+                deployment('https://bitbucket.org/creativeadvtech/pik-helm-charts.git', params.ENVIRONMENT, 'warsha', params.IMAGETAG.trim())
+            }
+        }
+        
+    }
+}

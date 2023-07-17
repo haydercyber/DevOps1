@@ -1,0 +1,68 @@
+pipeline {
+    agent {
+        kubernetes {
+            cloud 'eks-clients-staging'
+            inheritFrom 'jenkins-clients-staging'
+            yamlFile 'pipeline/pipelinePod.yaml'
+            workspaceVolume dynamicPVC(accessModes: 'ReadWriteOnce', requestsSize: '40Gi', storageClassName: 'ebs')
+        }
+    }
+    environment {
+        PATH = "/kaniko:/busybox:$PATH"
+        ECR_REPO_URL = '310830963532.dkr.ecr.eu-central-1.amazonaws.com'
+        ECR_REPO_NAME = 'warshah'
+        SCANNER_HOME = tool 'sonar'
+        SCANNER_PROJECT_NAME = "creativeadvtech:piktochart"
+    }
+    options {
+        ansiColor('xterm')
+    }
+    stages {
+        stage('Make version') {
+            steps {
+                script {
+                    env.shaVersion = sh(returnStdout: true, script: "git rev-parse --short=7 HEAD").trim()
+                    currentBuild.description = "piktochart-${env.shaVersion}"
+                }
+            }
+        }
+        stage('Static code analysis') {
+            tools {
+                nodejs 'Nodejs'
+            }
+            steps {
+                withSonarQubeEnv('sonarqube'){
+                    sh '''
+                        $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectKey=$SCANNER_PROJECT_NAME
+                    '''
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                container(name: 'builder', shell: '/busybox/sh') {
+                    sh ''' 
+                    /kaniko/executor --dockerfile Dockerfile --context . --destination=${ECR_REPO_URL}/${ECR_REPO_NAME}:piktochart-${GIT_COMMIT:0:7}
+                    '''
+                }
+            }
+        }
+    stage('Trigger of dev Environment Deployment') {
+            when {
+                expression { env.BRANCH_NAME == 'master' }
+                beforeOptions true
+                beforeInput true
+                beforeAgent true
+            }
+	    steps {
+	        script {
+		    build job: 'warsha/piktochart/deploy', 
+                        parameters: [
+                            string(name: 'ENVIRONMENT', value: "dev"),
+                            string(name: 'IMAGETAG', value: env.shaVersion)
+                        ]
+		}
+	    }
+	}
+    }
+}

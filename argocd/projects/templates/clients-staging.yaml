@@ -1,0 +1,28 @@
+{{- $name := .Values.projects.clientsstaging.name -}}
+{{- if .Values.projects.clientsstaging.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: {{ $name }}
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  description: Dashboard Portal for clients Staging
+  destinations:
+  - name: ' clientsstaging'
+    namespace: '*'
+    server: {{ .Values.projects.clientsstaging.cluster }}
+  roles:
+  - description: DevOps Team who added GitHub argocd-admins group.
+    groups:
+    - creativeadvtech/argocd-admins
+    name: devops
+    policies:
+    - p, proj:{{ $name }}:devops, applications, *, {{ $name }}/*, allow
+  sourceRepos:
+  {{- toYaml  .Values.projects.clientsstaging.sourceRepos | nindent 4 }}
+status:
+  jwtTokensByRole:
+    devops: {}
+{{- end -}}

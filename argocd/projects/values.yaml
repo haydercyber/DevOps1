@@ -1,0 +1,11 @@
+# Default values for projects.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+projects:
+  clientsstaging:
+    enabled: true
+    name: clients-staging
+    cluster: https://CLUSTERID.gr7.eu-central-1.eks.amazonaws.com
+    sourceRepos:
+      - https://charts.bitnami.com/bitnami
+      - https://github.com/haydercyber/Piktochart.git

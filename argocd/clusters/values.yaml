@@ -1,0 +1,6 @@
+annotationsCommon:
+  created-by: "infrastructure/Piktochart/argocd/clusters"
+  managed-by: "argocd.argoproj.io"
+piktochart:
+    staging:
+        bearerToken: $bearerToken

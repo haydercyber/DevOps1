@@ -1,0 +1,50 @@
+redis-cache:
+  enabled: true
+  architecture: standalone
+  auth:
+    enabled: false
+    sentinal: true
+  master:
+    containerPorts:
+      redis: 6379
+    persistence:
+      enabled: true
+      storageClass: "ebs"
+      accessModes:
+        - ReadWriteOnce
+      size: 8Gi
+image:
+  repository: 310830963532.dkr.ecr.eu-central-1.amazonaws.com/warshah
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "piktochart-248df10"
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+    - host: piktochart.creativeadvtech.ml
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: warsha-ingress-tls
+      hosts:
+        - piktochart.creativeadvtech.ml
+service:
+  type: ClusterIP
+  port: 3000
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 80
+config:
+  RAILS_ENV: development           
+  RACK_ENV: development         
+  RAILS_MAX_THREADS: "5"
+  REDIS_URL:  redis://piktochart-redis-cache-master:6379 
+  PIDFILE: tmp/pids/server.pid
+  CONFIG_HOSTS: piktochart.creativeadvtech.ml

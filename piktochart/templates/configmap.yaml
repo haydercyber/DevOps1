@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name:  {{ include "piktochart.fullname" . }}
+data:
+  RAILS_ENV:              "{{ .Values.config.RAILS_ENV }}"
+  RACK_ENV:               "{{ .Values.config.RACK_ENV }}"
+  RAILS_MAX_THREADS:      "{{ .Values.config.RAILS_MAX_THREADS }}"
+  REDIS_URL:              "{{ .Values.config.REDIS_URL }}"
+  PIDFILE:                "{{ .Values.config.PIDFILE }}"
+  CONFIG_HOSTS:           "{{ .Values.config.CONFIG_HOSTS }}"
