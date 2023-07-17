@@ -202,5 +202,5 @@ Please note that the image tag creation process can vary depending on your speci
 
 
 
-![Jenkins-Build](docs/gif/jenkins-build.gif)
+<img src="docs/gif/jenkins-build.gif" alt="Jenkins-Build" />
 
