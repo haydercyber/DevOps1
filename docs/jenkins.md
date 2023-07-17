@@ -202,5 +202,5 @@ Please note that the image tag creation process can vary depending on your speci
 
 
 
-<img src="docs/gif/jenkins-build.gif" alt="Jenkins-Build" />
+<img src="[docs/gif/jenkins-build.gif](https://github.com/haydercyber/Piktochart/blob/main/docs/gif/jenkins-build.gif)https://github.com/haydercyber/Piktochart/blob/main/docs/gif/jenkins-build.gif" alt="Jenkins-Build" />
 
