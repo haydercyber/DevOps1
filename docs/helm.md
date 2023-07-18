@@ -214,6 +214,8 @@ Use Ctrl-C to stop
 
 in case we need to prepare new enviorment for prodution we can only change the `RAILS_ENV`, `RACK_ENV` 
 
+you can see the Prod value [Prod](../piktochart/values-prod.yaml)
+
 lets see the output for produtions 
 ```
 Puma starting in single mode...

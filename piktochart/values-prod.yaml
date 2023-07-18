@@ -25,14 +25,14 @@ ingress:
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: letsencrypt-prod
   hosts:
-    - host: piktochart.dev.ml
+    - host: piktochart.prod.ml
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls:
-    - secretName: warsha-ingress-tls
+    - secretName: prod-ingress-tls
       hosts:
-        - piktochart.dev.ml
+        - piktochart.prod.ml
 service:
   type: ClusterIP
   port: 3000
@@ -42,9 +42,9 @@ autoscaling:
   maxReplicas: 4
   targetCPUUtilizationPercentage: 80
 config:
-  RAILS_ENV: development           
-  RACK_ENV: development         
+  RAILS_ENV: produtions           
+  RACK_ENV: produtions         
   RAILS_MAX_THREADS: "5"
   REDIS_URL:  redis://piktochart-redis-cache-master:6379 
   PIDFILE: tmp/pids/server.pid
-  CONFIG_HOSTS: piktochart.dev.ml
+  CONFIG_HOSTS: piktochart.prod.ml
