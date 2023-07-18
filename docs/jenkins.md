@@ -185,4 +185,4 @@ Please note that the image tag creation process can vary depending on your speci
 
 ![jenkins-build](https://i.imgur.com/CwxMd2R.gif)
 
-Next: [Helm](docs/helm.md)
+Next: [Helm](helm.md)

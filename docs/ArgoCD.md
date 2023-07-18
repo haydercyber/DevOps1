@@ -271,4 +271,4 @@ status:
     devops: {}
 ```
 
-Next: [CI/CD](docs/CICD.md)
+Next: [CI/CD](CICD.md)

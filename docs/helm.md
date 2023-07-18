@@ -228,4 +228,4 @@ Use Ctrl-C to stop
 
 no need to have muttiple dockerfile only one dockerfile is ok 
 
-Next: [ArgoCD](docs/ArgoCD.md)
+Next: [ArgoCD](ArgoCD.md)
