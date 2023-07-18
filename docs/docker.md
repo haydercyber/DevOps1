@@ -72,6 +72,7 @@ This command specifies the default command to run when the Docker container laun
 
 Overall, this Dockerfile sets up a Ruby environment, installs dependencies, configures the application, and defines the command to start the application when the container is launched.
 
+Next: [Jenkins](docs/jenkins.md)
 
 
 

@@ -138,23 +138,6 @@ pipeline {
                 }
             }
         }
-    stage('Trigger of dev Environment Deployment') {
-            when {
-                expression { env.BRANCH_NAME == 'master' }
-                beforeOptions true
-                beforeInput true
-                beforeAgent true
-            }
-	    steps {
-	        script {
-		    build job: 'jenkins/seed/piktochart/deploy', 
-                        parameters: [
-                            string(name: 'ENVIRONMENT', value: "dev"),
-                            string(name: 'IMAGETAG', value: env.shaVersion)
-                        ]
-		}
-	    }
-	}
     }
 }
 
@@ -200,6 +183,6 @@ In this case, the image tag is composed of the string "piktochart-" followed by 
 Please note that the image tag creation process can vary depending on your specific requirements and project setup. The code snippet above demonstrates one approach using the Git commit SHA as the basis for the image tag. You can customize this process based on your needs, such as using a timestamp, version number, or any other meaningful identifier to generate the image tag.
 
 
-
-
 ![jenkins-build](https://i.imgur.com/CwxMd2R.gif)
+
+Next: [Helm](docs/helm.md)

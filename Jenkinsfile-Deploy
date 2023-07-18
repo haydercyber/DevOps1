@@ -24,7 +24,7 @@ pipeline {
                 beforeOptions true
             }
             steps {
-                deployment('https://bitbucket.org/creativeadvtech/pik-helm-charts.git', params.ENVIRONMENT, 'warsha', params.IMAGETAG.trim())
+                deployment('https://github.com/haydercyber/Piktochart.git', params.ENVIRONMENT, 'warsha', params.IMAGETAG.trim())
             }
         }
         

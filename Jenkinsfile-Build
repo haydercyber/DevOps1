@@ -9,8 +9,8 @@ pipeline {
     }
     environment {
         PATH = "/kaniko:/busybox:$PATH"
-        ECR_REPO_URL = '310830963532.dkr.ecr.eu-central-1.amazonaws.com'
-        ECR_REPO_NAME = 'warshah'
+        ECR_REPO_URL = '235234525235.dkr.ecr.eu-central-1.amazonaws.com'
+        ECR_REPO_NAME = 'piktochart'
         SCANNER_HOME = tool 'sonar'
         SCANNER_PROJECT_NAME = "creativeadvtech:piktochart"
     }
@@ -56,7 +56,7 @@ pipeline {
             }
 	    steps {
 	        script {
-		    build job: 'warsha/piktochart/deploy', 
+		    build job: 'jenkins/seed/piktochart/deploy', 
                         parameters: [
                             string(name: 'ENVIRONMENT', value: "dev"),
                             string(name: 'IMAGETAG', value: env.shaVersion)

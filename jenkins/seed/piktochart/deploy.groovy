@@ -15,13 +15,13 @@ pipelineJob('jenkins/seed/piktochart/deploy') {
                 git {
                     remote {
                         name('origin')
-                        url('https://bitbucket.org/creativeadvtech/piktochart.git')
+                        url('https://github.com/haydercyber/piktochart.git')
                         credentials('jenkins/MainDevops')
                     }
                     branch('master')
                     browser {
                         bitbucketWeb {
-                            repoUrl('https://bitbucket.org/creativeadvtech/piktochart.git')
+                            repoUrl('https://github.com/haydercyber/piktochart.git')
                         }
                     }
                 }
