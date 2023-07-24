@@ -147,4 +147,4 @@ This pipeline demonstrates a basic deployment process to the dev environment. Yo
 you can see the full ci/cd 
 
 
-![CICD](/assets/CICD.gif)
+![CICD](https://i.imgur.com/gij67x0.gif)
