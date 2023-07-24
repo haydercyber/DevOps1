@@ -145,4 +145,6 @@ Here's an overview of the pipeline structure:
 This pipeline demonstrates a basic deployment process to the dev environment. You can add more stages and customize the pipeline to match your specific deployment requirements for different environments or additional deployment targets.
 
 you can see the full ci/cd 
-![CICD](https://i.imgur.com/hM6DSGx.gif)
+
+
+![CICD](/assets/CICD.gif)

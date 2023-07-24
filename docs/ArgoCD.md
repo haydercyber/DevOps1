@@ -12,8 +12,8 @@ Key features and benefits of Argo CD include:
 
 
 Argo CD simplifies the management of Kubernetes applications by enforcing best practices, providing visibility into the application state, and reducing the complexity of manual deployments. It promotes GitOps principles, enabling teams to adopt a unified and efficient approach to application delivery in Kubernetes environments.
-![argocd](https://i.imgur.com/ZARHYue.gif)
 
+![argocd](/assets/argocd.gif)
 
 # Applying ArgoCD 
 To Apply CD USING ArgoCD we should apply this points 
