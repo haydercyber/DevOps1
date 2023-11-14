@@ -1,0 +1,40 @@
+- name: Stop PostgreSQL server
+  systemd:
+    name: postgresql-14
+    state: stopped
+- name: Move data backup
+  shell: mv data data-backup
+  args:
+    chdir: /var/lib/pgsql/14/
+- name: Create data directory
+  file:
+    path: /var/lib/pgsql/14/data 
+    mode: 0700 
+    owner: postgres 
+    group: postgres 
+    state: directory
+- name: Backup initial data from master 
+  shell: su - postgres -c "PGPASSWORD={{ replica_password }} pg_basebackup -w -h 192.168.250.49 -U replica -D /var/lib/pgsql/14/data -P "
+- name: Update postgresql.conf
+  lineinfile:
+    path: /var/lib/pgsql/14/data/postgresql.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: "#listen_addresses = 'localhost'", line: "listen_addresses = '{{ ansible_default_ipv4.address }}'" }
+- name: Create recovery.conf
+  blockinfile:
+    path: /var/lib/pgsql/14/data/recovery.conf
+    block: | 
+      standby_mode = 'on'
+      primary_conninfo = 'host=192.168.250.49 port=5432 user=replica password={{ replica_password }} application_name=slave01' 
+      trigger_file = '/tmp/postgresql.trigger.5432' 
+    mode: 0600
+    owner: postgres
+    group: postgres 
+    state: present 
+    create: yes
+- name: Start PostgreSQL server
+  systemd:
+    name: postgresql-14 
+    state: started

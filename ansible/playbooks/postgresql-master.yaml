@@ -1,0 +1,4 @@
+- hosts: postgresql-primary
+  become: yes
+  roles:
+    - postgresql-master

@@ -1,0 +1,63 @@
+- name: update the system 
+  yum: 
+    name: "*"
+    state: latest
+    disable_gpg_check: true 
+- name: set system hostname
+  command: hostnamectl set-hostname {{ inventory_hostname }}
+- name: Add IPs to /etc/hosts on master and workers
+  become: yes
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ item }}$'
+    line: "{{ hostvars[item].ansible_host }} {{item}}"
+    state: present
+  when: hostvars[item].ansible_host is defined
+  with_items: "{{ groups.all }}"
+- name: Set Enforce
+  command: setenforce 0
+  ignore_errors: true
+- name: Disable SELinux
+  selinux:
+    state: disabled
+  ignore_errors: true
+- name: Stop Firewlld 
+  systemd: 
+    state: stopped
+    name: firewalld 
+    enabled: no 
+  ignore_errors: true
+- name: Install haproxy package
+  become: yes
+  yum:
+    name: haproxy
+- name: create dir for error 
+  file:
+    path: /etc/haproxy/errors
+    state: directory
+    owner: root
+    group: root
+    mode:  0755
+    recurse: yes
+- name: create error file 
+  file:
+    path: /etc/haproxy/errors/{{ item }}
+    state: touch
+    owner: root
+    group: root
+    mode:  0755
+  with_items:
+  - 400.http
+  - 403.http 
+  - 408.http
+  - 500.http
+  - 502.http
+  - 503.http
+  - 504.http
+- name:  Configure haproxy
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    backup: yes
+    validate: /usr/sbin/haproxy  -c -V -f %s 
+  notify: enable haproxy

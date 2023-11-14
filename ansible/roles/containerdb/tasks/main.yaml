@@ -1,0 +1,33 @@
+- name : create a iptables file 
+  file: 
+    path: "/etc/modules-load.d/containerd.conf"
+    state: "touch"
+- name: iptables config as specified by continerd documentation
+  blockinfile: 
+    path: "/etc/modules-load.d/containerd.conf"
+    block: |
+          overlay
+          br_netfilter
+- name: modprobe
+  become: yes 
+  shell: |
+        modprobe overlay
+        modprobe br_netfilter
+- name: update sysctl
+  command: sysctl --system
+- name: Generate the configuration file with
+  copy:
+    remote_src: no 
+    src: templates/config.toml
+    dest: /etc/containerd/config.toml 
+- name: Configuring the systemd cgroup driver 
+  lineinfile: 
+    path: /etc/containerd/config.toml 
+    regexp: "SystemdCgroup ="
+    line: "SystemdCgroup = true" 
+- name: restart containerd
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: containerd
+    enabled: yes

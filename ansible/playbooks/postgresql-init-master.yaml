@@ -1,0 +1,4 @@
+- hosts: postgresql-slave:postgresql-master
+  become: yes
+  roles:
+    - postgresql-init-master

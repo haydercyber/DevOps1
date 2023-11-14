@@ -1,0 +1,28 @@
+- name: Set Enforce
+  command: setenforce 0
+  ignore_errors: true
+- name: Disable SELinux
+  selinux:
+    state: disabled
+  ignore_errors: true
+- name: Install PostgreSQL 
+  package:
+    name: postgresql14
+    state: latest
+- name: Install PostgreSQL server
+  package:
+    name: postgresql14-server
+    state: latest
+- name: Initialize database
+  shell: postgresql-14-setup initdb
+- name: Start PostgreSQL server
+  systemd:
+    name: postgresql-14
+    enabled: yes
+    state: started
+- name: Wait for server to start
+  wait_for:
+    port: 5432
+- name: Change postgres password
+  shell: sudo -u postgres psql -c "ALTER USER postgres WITH password '{{ db_password }}'"
+ 

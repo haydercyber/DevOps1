@@ -1,0 +1,34 @@
+- name: Update postgresql.conf
+  lineinfile:
+    path: /var/lib/pgsql/14/data/postgresql.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: "#listen_addresses = 'localhost'", line: "listen_addresses = '{{ ansible_default_ipv4.address }}'" }
+    - { regexp: '#wal_level = minimal', line: 'wal_level = hot_standby' }
+    - { regexp: '#synchronous_commit = on', line: 'synchronous_commit = local' }
+    - { regexp: '#archive_mode = off', line: 'archive_mode = on' }
+    - { regexp: "#archive_command = ''", line: "archive_command = 'cp %p /var/lib/pgsql/14/archive/%f'" }
+    - { regexp: '#max_wal_senders = 0', line: 'max_wal_senders = 2' }
+    - { regexp: "#synchronous_standby_names = ''", line: "synchronous_standby_names = 'slave01'" }
+- name: Create archive directory
+  file:
+    path: /var/lib/pgsql/14/archive/
+    mode: 0700
+    owner: postgres
+    group: postgres
+    state: directory
+- name: Update pg_hba.conf
+  blockinfile:
+    path: /var/lib/pgsql/14/data/pg_hba.conf
+    insertafter: '#host replication postgres ::1/128 ident'
+    block: |
+        host  all  all 0.0.0.0/0 md5
+- name: Restart PostgreSQL server
+  systemd: 
+    name:  postgresql-14
+    enabled: yes
+    state: restarted 
+- name: Create replication user
+  shell: sudo -u postgres psql -c "CREATE USER replica REPLICATION LOGIN ENCRYPTED PASSWORD '{{ replica_password }}'"
+ 

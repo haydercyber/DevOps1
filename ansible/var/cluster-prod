@@ -1,0 +1,7 @@
+---
+crictl_version: v1.24.1
+kubeadm_version:  1.24.3-0
+kubernetes_version: v1.24.2
+proxy_ip: 192.168.250.43
+db_password: l2412vLZui3H
+replica_password: xjY4EI64oGuA0

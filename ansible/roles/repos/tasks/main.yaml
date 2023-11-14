@@ -1,0 +1,28 @@
+- name: set system hostname
+  command: hostnamectl set-hostname {{ inventory_hostname }}
+- name: Add IPs to /etc/hosts on master and workers
+  become: yes
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ item }}$'
+    line: "{{ hostvars[item].ansible_host }} {{item}}"
+    state: present
+  when: hostvars[item].ansible_host is defined
+  with_items: "{{ groups.all }}"
+- name: remove old repo 
+  shell: rm -rf /etc/yum.repos.d/* 
+  tags: repos
+- name: copy all repo to the path 
+  copy:
+    remote_src: no 
+    src: templates/
+    dest: /etc/yum.repos.d/
+- name: install bash-completion
+  yum: 
+    name: bash-completion
+    state: latest 
+- name: update the system 
+  yum: 
+    name: "*"
+    state: latest
+    disable_gpg_check: true 

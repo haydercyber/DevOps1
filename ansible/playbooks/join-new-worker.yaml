@@ -1,0 +1,5 @@
+- hosts: worker-node-1
+  become: yes
+  roles:
+    - repos
+    - kubeadm-prep

@@ -1,0 +1,4 @@
+- hosts: postgresql-slave
+  become: yes
+  roles:
+    - postgresql-slave

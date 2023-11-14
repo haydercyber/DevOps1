@@ -1,0 +1,7 @@
+[kubernetes]
+name=Kubernetes
+baseurl=http://nexus.igw.com/repository/kubernetes/repos/kubernetes-el7-$basearch
+enabled=1
+gpgcheck=1
+gpgkey=http://nexus.igw.com/repository/kubernetes/doc/rpm-package-key.gpg
+exclude=kubelet kubeadm kubectl

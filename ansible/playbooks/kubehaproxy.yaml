@@ -1,0 +1,4 @@
+- hosts: kubehaproxy-nodes
+  become: yes
+  roles:
+    - kubehaproxy

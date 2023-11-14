@@ -1,0 +1,4 @@
+- hosts: master-node-2:k8s-workers
+  become: yes
+  roles:
+    - containerd

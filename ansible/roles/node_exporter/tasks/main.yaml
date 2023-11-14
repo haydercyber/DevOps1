@@ -1,0 +1,16 @@
+- name: Add Promtheus  repository
+  yum_repository:
+    name: prometheus
+    description: Promethues Repo 
+    baseurl: http://nexus.igw.com/repository/prom/prometheus-rpm/release/el/7/$basearch
+    gpgcheck: no
+    enabled: yes 
+- name: Install Node Exporter   
+  yum: 
+    name: node_exporter
+    state: latest
+- name: Start and Enable Node Exporter
+  systemd:
+    state: started 
+    name: node_exporter
+    enabled: yes

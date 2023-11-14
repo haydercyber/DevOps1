@@ -1,0 +1,6 @@
+- hosts: master-node-1
+  become: yes
+  roles:
+    - repos
+
+

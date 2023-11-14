@@ -1,0 +1,7 @@
+- name: Copy calico.yaml manifests
+  template:
+    src: calico.yaml
+    dest: /tmp/calico.yaml
+    force: yes
+- name: Create Calico Deployment
+  shell: kubectl apply -f /tmp/calico.yaml

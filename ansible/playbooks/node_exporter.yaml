@@ -1,0 +1,4 @@
+- hosts: nfs-server:nexus.igw.com:postgresql-master:postgresql-slave:kube-haproxy
+  become: yes
+  roles:
+    - node_exporter
