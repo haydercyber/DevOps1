@@ -15,7 +15,7 @@ checkout() {
 
 if (checkout; [ $? -eq 0 ]) ; then
     echo "**SUCCESS** ${SERVICE} will be deployed soon"
-    argocd login --username $ARGOCD_USERNAME --password $ARGOCD_PASSWORD argocd.creativeadvtech.ml
+    argocd login --username $ARGOCD_USERNAME --password $ARGOCD_PASSWORD argocd.domainname.ml
     argocd app get --grpc-web ${PROJECT}-${ENV}-${SERVICE} --hard-refresh
     argocd app wait --grpc-web ${PROJECT}-${ENV}-${SERVICE}
 else
