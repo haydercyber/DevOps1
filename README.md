@@ -1,4 +1,4 @@
-# Technical test For  prescreening for Interview 
+# Technical DevOps 
 this the document for full CI/CD Using GitOps Methodology You can see this Image the output of Applications 
 ![digram screenshot](docs/images/app.png)
 
